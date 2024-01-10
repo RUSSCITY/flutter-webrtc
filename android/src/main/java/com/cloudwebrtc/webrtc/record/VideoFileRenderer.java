@@ -143,7 +143,8 @@ class VideoFileRenderer implements VideoSink, SamplesReadyCallback {
                 encoder.release();
             }
             eglBase.release();
-            mediaMuxer.stop();
+            // MYCHANGES:
+//            mediaMuxer.stop(); STOP is triggered during release().
             mediaMuxer.release();
             renderThread.quit();
         });
