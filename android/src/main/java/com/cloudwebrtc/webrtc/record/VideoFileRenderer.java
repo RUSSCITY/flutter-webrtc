@@ -143,7 +143,11 @@ class VideoFileRenderer implements VideoSink, SamplesReadyCallback {
                 encoder.release();
             }
             eglBase.release();
-            mediaMuxer.stop();
+            try {
+                mediaMuxer.stop();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             mediaMuxer.release();
             renderThread.quit();
         });
@@ -223,12 +227,12 @@ class VideoFileRenderer implements VideoSink, SamplesReadyCallback {
             } else if (encoderStatus == MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED) {
                 // not expected for an encoder
                 audioOutputBuffers = audioEncoder.getOutputBuffers();
-                Log.w(TAG, "encoder output buffers changed");
+                Log.w(TAG, "encoder audio output buffers changed");
             } else if (encoderStatus == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
                 // not expected for an encoder
                 MediaFormat newFormat = audioEncoder.getOutputFormat();
 
-                Log.w(TAG, "encoder output format changed: " + newFormat);
+                Log.w(TAG, "encoder audio output format changed: " + newFormat);
                 audioTrackIndex = mediaMuxer.addTrack(newFormat);
                 if (trackIndex != -1 && !muxerStarted) {
                     mediaMuxer.start();
