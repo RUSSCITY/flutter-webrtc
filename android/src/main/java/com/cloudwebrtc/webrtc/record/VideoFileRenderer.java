@@ -158,6 +158,7 @@ class VideoFileRenderer implements VideoSink, SamplesReadyCallback {
     private long videoFrameStart = 0;
 
     private void drainEncoder() {
+        Log.d(TAG, "encoder drainEncoder 1");
         if (!encoderStarted) {
             encoder.start();
             encoderOutputBuffers = encoder.getOutputBuffers();
@@ -185,8 +186,10 @@ class VideoFileRenderer implements VideoSink, SamplesReadyCallback {
                     muxerStarted = true;
                     Log.d(TAG, "encoder mediaMuxer STARTED 1");
                 }
-                if (!muxerStarted)
+                if (!muxerStarted) {
+                    Log.e(TAG, "encoder mediaMuxer not started 1. audioTrackIndex != -1: " + (audioTrackIndex != -1));
                     break;
+                }
             } else if (encoderStatus < 0) {
                 Log.e(TAG, "encoder unexpected result fr om encoder.dequeueOutputBuffer: " + encoderStatus);
             } else { // encoderStatus >= 0
@@ -216,6 +219,7 @@ class VideoFileRenderer implements VideoSink, SamplesReadyCallback {
                         break;
                     }
                 } catch (Exception e) {
+                    Log.e(TAG, "encoder wtf 1:" + e.getMessage());
                     Log.wtf(TAG, e);
                     break;
                 }
@@ -226,6 +230,7 @@ class VideoFileRenderer implements VideoSink, SamplesReadyCallback {
     private long presTime = 0L;
 
     private void drainAudio() {
+        Log.d(TAG, "encoder drainAudio 2");
         if (audioBufferInfo == null)
             audioBufferInfo = new MediaCodec.BufferInfo();
         while (true) {
@@ -270,6 +275,7 @@ class VideoFileRenderer implements VideoSink, SamplesReadyCallback {
                         break;
                     }
                 } catch (Exception e) {
+                    Log.e(TAG, "encoder wtf 2:" + e.getMessage());
                     Log.wtf(TAG, e);
                     break;
                 }
