@@ -285,6 +285,7 @@ class VideoFileRenderer implements VideoSink, SamplesReadyCallback {
 
     @Override
     public void onWebRtcAudioRecordSamplesReady(JavaAudioDeviceModule.AudioSamples audioSamples) {
+        Log.e(TAG, "CAN I SEE THIS?!");
         if (!isRunning) {
             Log.e(TAG, "encoder onWebRtcAudioRecordSamplesReady not running");
             return;
