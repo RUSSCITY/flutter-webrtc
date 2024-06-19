@@ -972,8 +972,8 @@ class GetUserMediaImpl {
 //                        .getContentResolver()
 //                        .insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
             }
-            return 0;
         }
+        return 0;
     }
 
     void hasTorch(String trackId, Result result) {
