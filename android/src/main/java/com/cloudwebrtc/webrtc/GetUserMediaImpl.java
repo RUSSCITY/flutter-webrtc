@@ -961,7 +961,7 @@ class GetUserMediaImpl {
             mediaRecorder.stopRecording();
             mediaRecorders.remove(id);
             File file = mediaRecorder.getRecordFile();
-            if (file != null) {
+            if (file != null && false) { // don't need to publish to content manager as we can save file in private storage
                 ContentValues values = new ContentValues(3);
                 values.put(MediaStore.Video.Media.TITLE, file.getName());
                 values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
