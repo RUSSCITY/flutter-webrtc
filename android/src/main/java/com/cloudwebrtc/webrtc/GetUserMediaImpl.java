@@ -955,21 +955,24 @@ class GetUserMediaImpl {
         mediaRecorders.append(id, mediaRecorder);
     }
 
-    void stopRecording(Integer id) {
+    long stopRecording(Integer id) {
         MediaRecorderImpl mediaRecorder = mediaRecorders.get(id);
         if (mediaRecorder != null) {
             mediaRecorder.stopRecording();
             mediaRecorders.remove(id);
             File file = mediaRecorder.getRecordFile();
-            if (file != null && false) { // don't need to publish to content manager as we can save file in private storage
-                ContentValues values = new ContentValues(3);
-                values.put(MediaStore.Video.Media.TITLE, file.getName());
-                values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
-                values.put(MediaStore.Video.Media.DATA, file.getAbsolutePath());
-                applicationContext
-                        .getContentResolver()
-                        .insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+            if (file != null) {
+                return file.length();
+                // don't need to publish to content manager as we can save file in private storage
+//                ContentValues values = new ContentValues(3);
+//                values.put(MediaStore.Video.Media.TITLE, file.getName());
+//                values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
+//                values.put(MediaStore.Video.Media.DATA, file.getAbsolutePath());
+//                applicationContext
+//                        .getContentResolver()
+//                        .insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
             }
+            return 0;
         }
     }
 
@@ -1089,7 +1092,7 @@ class GetUserMediaImpl {
 
                 final double desiredZoomLevel = Math.max(1.0, Math.min(zoomLevel, maxZoomLevel));
 
-                float ratio = 1.0f / (float)desiredZoomLevel;
+                float ratio = 1.0f / (float) desiredZoomLevel;
 
                 if (rect != null) {
                     int croppedWidth = rect.width() - Math.round((float) rect.width() * ratio);
@@ -1138,10 +1141,10 @@ class GetUserMediaImpl {
             Camera.Parameters params = camera.getParameters();
             params.setFlashMode(
                     isTorchOn ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF);
-            if(params.isZoomSupported()) {
+            if (params.isZoomSupported()) {
                 int maxZoom = params.getMaxZoom();
                 double desiredZoom = Math.max(0, Math.min(zoomLevel, maxZoom));
-                params.setZoom((int)desiredZoom);
+                params.setZoom((int) desiredZoom);
                 result.success(null);
                 return;
             }
@@ -1298,7 +1301,7 @@ class GetUserMediaImpl {
         if (devices.length > 0) {
             for (int i = 0; i < devices.length; i++) {
                 AudioDeviceInfo device = devices[i];
-                if(deviceId.equals(AudioUtils.getAudioDeviceId(device))) {
+                if (deviceId.equals(AudioUtils.getAudioDeviceId(device))) {
                     preferredInput = device;
                     audioDeviceModule.setPreferredInputDevice(preferredInput);
                     return;
